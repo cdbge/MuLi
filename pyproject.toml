@@ -1,0 +1,10 @@
+[project]
+name = "MuLi"
+version = "0.1.0"
+description = "沐璃，一个强大的拟人AI助手"
+authors = [
+    {name = "Null", email = "pylindex@qq.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
