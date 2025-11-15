@@ -1,4 +1,5 @@
 from ruamel.yaml import YAML
+from ruamel.yaml.comments import CommentedMap
 from charset_normalizer import from_path
 from typing import Any
 import os
@@ -10,7 +11,7 @@ class ConfigManager:
         self.yaml.preserve_quotes = True
         self.data = self._read_config_file()
 
-    def _read_config_file(self) -> dict:
+    def _read_config_file(self) -> CommentedMap:
         if not os.path.exists(self.config_path):
             return self.yaml.load("{}") 
         
@@ -19,11 +20,24 @@ class ConfigManager:
             data = self.yaml.load(f)
         return data
 
-    def get(self, key: str, default: Any = None) -> Any:
-        return self.data.get(key, default)
+    def get(self, key_path: str, default: Any = None) -> Any:
+        keys = key_path.split('.')
+        value = self.data
+        try:
+            for key in keys:
+                value = value[key]
+            return value
+        except (KeyError, TypeError):
+            return default
 
-    def set(self, key: str, new_value: Any) -> None:
-        self.data[key] = new_value
+    def set(self, key_path: str, new_value: Any) -> None:
+        keys = key_path.split('.')
+        obj = self.data
+
+        for key in keys[:-1]:
+            obj = obj.setdefault(key, CommentedMap())
+        
+        obj[keys[-1]] = new_value
 
     def save(self) -> None:
         with open(self.config_path, "w", encoding="utf-8") as f:
