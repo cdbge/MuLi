@@ -1,5 +1,5 @@
 import openai
-from response.providers import supported_providers, openai_get_structure_output, deepseek_get_structure_output
+from llms.providers import supported_providers, openai_get_structure_output, deepseek_get_structure_output
 from config_manage.manager import ConfigManager
 
 class JsonModel:

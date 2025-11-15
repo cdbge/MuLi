@@ -1,5 +1,5 @@
 import openai
-from response.providers import supported_providers, openai_get_text_response, deepseek_get_text_response
+from llms.providers import supported_providers, openai_get_text_response, deepseek_get_text_response
 
 class AIModel:
     def __init__(self, api_key: str, base_url: str, model_name: str, provider_type: str, system_prompt: str, tools: None | list[dict] = None):
